@@ -18,9 +18,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JLabel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-//import javax.swing.Timer;
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.Timer;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
@@ -174,9 +172,8 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 		
 		JLabel lblTimerLabel = new JLabel("Timer Label");
 		lblTimerLabel.setFont(new Font("Bookman Old Style", Font.PLAIN, 13));
-		timer = new Timer();
-		
-			/*private int count = 420;
+		timer = new Timer(1000, new ActionListener () {
+			private int count = 420;
 			public void actionPerformed(ActionEvent e) {
 				if (count <= 0) {
 					lblTimerLabel.setText("Done");
@@ -185,7 +182,7 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 				} else {
 					lblTimerLabel.setText(format(count));
 					count--;
-				}*/
+				}
 				//LocalDateTime now = LocalDateTime.now();
 				//Duration runningTime = Duration.between(startTime, now);
 				//Duration timeLeft = duration.minus(runningTime);
@@ -194,6 +191,8 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 					
 				//}
 				//lblTimerLabel.setText(format(timeLeft));
+			}
+		});
 		GridBagConstraints gbc_lblTimerLabel = new GridBagConstraints();
 		gbc_lblTimerLabel.gridwidth = 7;
 		gbc_lblTimerLabel.insets = new Insets(0, 0, 5, 0);
@@ -205,15 +204,11 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 		btnStartTimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (timerClick == 0) {
-					timer.schedule(timerTask, 1000);
-					timerClick++;
-				} else if (timerClick == 1) {
-					timer.stop();
-					timer.cancel();
 					timer.start();
 					timerClick++;
-				} else if (timerClick == 2) {
-					//timer.
+				} else if (timerClick >= 1) {
+					timer.stop();
+					timer.restart();
 				}
 			}
 		});
