@@ -1,0 +1,9 @@
+import java.util.Queue;
+
+public class PlayerQueue {
+	private Queue<String> name = new Queue<String>();
+	public void passName(String N) {
+		name.add(N);
+	}
+	
+}

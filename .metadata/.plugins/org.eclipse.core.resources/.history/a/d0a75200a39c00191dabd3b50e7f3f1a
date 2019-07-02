@@ -1,0 +1,23 @@
+
+public class FuturePlayers extends Players{
+	
+	public FuturePlayers(String Name) {
+		this.setName(name);
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setGame(String game) {
+		this.game = game;
+	}
+	
+	public String getGame() {
+		return game;
+	}
+}
