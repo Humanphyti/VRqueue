@@ -7,15 +7,26 @@ import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.Timer;
+import java.time.Duration;
+import java.awt.BorderLayout;
+import javax.swing.JList;
+import javax.swing.JSpinner;
 
-public class QueueWindow extends JFrame {
+public class QueueWindow extends JFrame implements ActionListener,  MouseMotionListener{
 
 	private JPanel contentPane;
+	private Timer timer;
 	private JTextField textField;
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -37,80 +48,138 @@ public class QueueWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public QueueWindow() {
+		setTitle("VR Queue");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1920, 1080);
+		setBounds(100, 100, 759, 583);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 31, 30, 30, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblOnDeck = new JLabel("On Deck");
-		GridBagConstraints gbc_lblOnDeck = new GridBagConstraints();
-		gbc_lblOnDeck.gridwidth = 12;
-		gbc_lblOnDeck.insets = new Insets(0, 0, 5, 5);
-		gbc_lblOnDeck.gridx = 0;
-		gbc_lblOnDeck.gridy = 1;
-		contentPane.add(lblOnDeck, gbc_lblOnDeck);
+		JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayout.WEST);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[]{0, 0,0, 0,0,0,0};
+		gbl_panel.rowHeights = new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+		gbl_panel.columnWeights = new double[]{/*Double.MIN_VALUE,*/ 0.0, 0.0, 1.0};
+		gbl_panel.rowWeights = new double[]{0.0};
+		panel.setLayout(gbl_panel);
 		
-		JTextPane textPane = new JTextPane();
-		GridBagConstraints gbc_textPane = new GridBagConstraints();
-		gbc_textPane.gridwidth = 12;
-		gbc_textPane.gridheight = 32;
-		gbc_textPane.insets = new Insets(0, 0, 5, 5);
-		gbc_textPane.fill = GridBagConstraints.BOTH;
-		gbc_textPane.gridx = 0;
-		gbc_textPane.gridy = 2;
-		contentPane.add(textPane, gbc_textPane);
-		
-		JLabel lblPlayer = new JLabel("Player");
-		GridBagConstraints gbc_lblPlayer = new GridBagConstraints();
-		gbc_lblPlayer.gridwidth = 7;
-		gbc_lblPlayer.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPlayer.gridx = 13;
-		gbc_lblPlayer.gridy = 3;
-		contentPane.add(lblPlayer, gbc_lblPlayer);
-		
-		JLabel lblEnterName = new JLabel("Enter Name");
-		GridBagConstraints gbc_lblEnterName = new GridBagConstraints();
-		gbc_lblEnterName.gridwidth = 7;
-		gbc_lblEnterName.insets = new Insets(0, 0, 5, 5);
-		gbc_lblEnterName.gridx = 24;
-		gbc_lblEnterName.gridy = 3;
-		contentPane.add(lblEnterName, gbc_lblEnterName);
-		
-		JTextPane textPane_1 = new JTextPane();
-		GridBagConstraints gbc_textPane_1 = new GridBagConstraints();
-		gbc_textPane_1.gridwidth = 7;
-		gbc_textPane_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textPane_1.fill = GridBagConstraints.BOTH;
-		gbc_textPane_1.gridx = 13;
-		gbc_textPane_1.gridy = 4;
-		contentPane.add(textPane_1, gbc_textPane_1);
+		JLabel lblNewLabel = new JLabel("Enter Name");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.gridwidth = 7;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 2;
+		panel.add(lblNewLabel, gbc_lblNewLabel);
 		
 		textField = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 8;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.gridwidth = 7;
+		gbc_textField.insets = new Insets(0, 0, 5, 0);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 24;
+		gbc_textField.gridx = 0;
 		gbc_textField.gridy = 4;
-		contentPane.add(textField, gbc_textField);
+		panel.add(textField, gbc_textField);
 		textField.setColumns(10);
 		
 		JButton btnSubmit = new JButton("Submit");
 		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
-		gbc_btnSubmit.fill = GridBagConstraints.BOTH;
-		gbc_btnSubmit.gridwidth = 3;
-		gbc_btnSubmit.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSubmit.gridx = 32;
-		gbc_btnSubmit.gridy = 4;
-		contentPane.add(btnSubmit, gbc_btnSubmit);
+		gbc_btnSubmit.gridwidth = 7;
+		gbc_btnSubmit.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSubmit.gridx = 0;
+		gbc_btnSubmit.gridy = 6;
+		panel.add(btnSubmit, gbc_btnSubmit);
 		
+		JPanel panel_1 = new JPanel();
+		contentPane.add(panel_1, BorderLayout.EAST);
+		GridBagLayout gbl_panel_1 = new GridBagLayout();
+		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0,0, 0,0};
+		gbl_panel_1.rowHeights = new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+		gbl_panel_1.rowWeights = new double[]{0.0};
+		panel_1.setLayout(gbl_panel_1);
+		
+		JLabel lblCurrentPlayer = new JLabel("Current Player");
+		GridBagConstraints gbc_lblCurrentPlayer = new GridBagConstraints();
+		gbc_lblCurrentPlayer.gridwidth = 8;
+		gbc_lblCurrentPlayer.insets = new Insets(0, 0, 5, 0);
+		gbc_lblCurrentPlayer.gridx = 0;
+		gbc_lblCurrentPlayer.gridy = 2;
+		panel_1.add(lblCurrentPlayer, gbc_lblCurrentPlayer);
+		
+		textField_1 = new JTextField();
+		textField_1.setEditable(false);
+		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		gbc_textField_1.gridwidth = 8;
+		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_1.gridx = 0;
+		gbc_textField_1.gridy = 4;
+		panel_1.add(textField_1, gbc_textField_1);
+		textField_1.setColumns(10);
+		
+		JPanel panel_2 = new JPanel();
+		contentPane.add(panel_2, BorderLayout.CENTER);
+		GridBagLayout gbl_panel_2 = new GridBagLayout();
+		gbl_panel_2.columnWidths = new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0};
+		gbl_panel_2.rowHeights = new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+		gbl_panel_2.columnWeights = new double[]{1.0, 0.0};
+		gbl_panel_2.rowWeights = new double[]{0.0, 0.0};
+		panel_2.setLayout(gbl_panel_2);
+		
+		JLabel lblCurrentFuturePlayer = new JLabel("Current Future Player Queue");
+		GridBagConstraints gbc_lblCurrentFuturePlayer = new GridBagConstraints();
+		gbc_lblCurrentFuturePlayer.gridwidth = 13;
+		gbc_lblCurrentFuturePlayer.insets = new Insets(0, 0, 5, 0);
+		gbc_lblCurrentFuturePlayer.gridx = 0;
+		gbc_lblCurrentFuturePlayer.gridy = 0;
+		panel_2.add(lblCurrentFuturePlayer, gbc_lblCurrentFuturePlayer);
+		
+		JList list = new JList();
+		GridBagConstraints gbc_list = new GridBagConstraints();
+		gbc_list.gridheight = 15;
+		gbc_list.gridwidth = 12;
+		gbc_list.insets = new Insets(0, 0, 5, 5);
+		gbc_list.fill = GridBagConstraints.BOTH;
+		gbc_list.gridx = 0;
+		gbc_list.gridy = 1;
+		panel_2.add(list, gbc_list);
+		
+		JButton btnRemoveFuturePlayer = new JButton("Remove Future Player");
+		GridBagConstraints gbc_btnRemoveFuturePlayer = new GridBagConstraints();
+		gbc_btnRemoveFuturePlayer.gridwidth = 6;
+		gbc_btnRemoveFuturePlayer.insets = new Insets(0, 0, 0, 5);
+		gbc_btnRemoveFuturePlayer.gridx = 0;
+		gbc_btnRemoveFuturePlayer.gridy = 16;
+		panel_2.add(btnRemoveFuturePlayer, gbc_btnRemoveFuturePlayer);
+		
+		JButton btnMakeThePlayer = new JButton("Make the Player!");
+		GridBagConstraints gbc_btnMakeThePlayer = new GridBagConstraints();
+		gbc_btnMakeThePlayer.gridwidth = 6;
+		gbc_btnMakeThePlayer.gridx = 7;
+		gbc_btnMakeThePlayer.gridy = 16;
+		panel_2.add(btnMakeThePlayer, gbc_btnMakeThePlayer);
+		
+		
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 
