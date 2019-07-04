@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javafx.scene.media.Media;
@@ -31,12 +32,16 @@ import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.UIManager;
 import java.awt.Font;
+import java.util.Scanner;
+import javax.sound.sampled.*;
+import sun.audio.*;
 
 public class QueueWindow extends JFrame implements ActionListener,  MouseMotionListener{
 
 	
 	private JPanel contentPane;
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
+	JLabel lblWarningsLabel;
 	private Timer timer;
 	private int count = 10;
 	private JTextField textField;
@@ -48,7 +53,15 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 	private int startClick = 0;
 	private int resetClick = 0;
 	private int textFieldClick = 0;
-	private String[] games = {"Select Game Please", "BeatSaber", "Superhot", "The Lab", "Fruit Ninja", "HoloPoint", "Raw Data", "Sairento", "Unseen Diplomacy"};
+	private int vari = 1;
+	private String status;
+	AudioInputStream audioInputStream;
+	InputStream in;
+	private Clip clip;
+	
+	
+	
+	private String[] games = {"Select Game Please", "BeatSaber", "Superhot", "The Lab", "Fruit Ninja", "HoloPoint", "Raw Data", "Sairento", "Unseen Diplomacy", "Keep Talking & Nobody Explodes"};
 	
 	
 
@@ -119,7 +132,16 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 		JComboBox<String> comboBox = new JComboBox<String>(games);
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				String game = comboBox.getSelectedItem().toString();
+				//if (game.contains("Raw Data") || game.contains("Sairento") || game.contains("Keep Talking & Nobody Explodes")) {
+				if (vari >= 0) {
+					if (game.contains("Raw Data"))
+						editWarningsLabel("<html>WARNING!<br/>May cause MINOR NAUSEA<html>");
+					else if (game.contains("Sairento"))
+						editWarningsLabel("<html>WARNING!<br/>May cause MODERATE/SEVERE NAUSEA<html>");
+					else if (game.contains("Keep Talking & Nobody Explodes"))
+						editWarningsLabel("<html>WARNING!<br/>Requires 2 more people. NPC grab Manual<html>");
+				}
 			}
 		});
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
@@ -133,7 +155,7 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 		JLabel lblChoosePreferredVr = new JLabel("Choose Preferred VR Game");
 		GridBagConstraints gbc_lblChoosePreferredVr = new GridBagConstraints();
 		gbc_lblChoosePreferredVr.gridwidth = 7;
-		gbc_lblChoosePreferredVr.insets = new Insets(0, 0, 5, 5);
+		gbc_lblChoosePreferredVr.insets = new Insets(0, 0, 5, 0);
 		gbc_lblChoosePreferredVr.gridx = 0;
 		gbc_lblChoosePreferredVr.gridy = 6;
 		panel.add(lblChoosePreferredVr, gbc_lblChoosePreferredVr);
@@ -144,7 +166,7 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 			public void actionPerformed(ActionEvent e) {
 				if (textFieldClick == 1) {
 					String tempName = textField.getText();
-					String tempGame = (String) comboBox.getSelectedItem();
+					String tempGame = comboBox.getSelectedItem().toString();
 					FuturePlayers fp = new FuturePlayers(tempName, tempGame);
 					futurePlayer.add(fp);
 					players.addElement(fp);
@@ -159,6 +181,17 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 		gbc_btnSubmit.gridx = 0;
 		gbc_btnSubmit.gridy = 10;
 		panel.add(btnSubmit, gbc_btnSubmit);
+		
+		lblWarningsLabel = new JLabel("Warnings Label");
+		lblWarningsLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
+		lblWarningsLabel.setEnabled(false);
+		GridBagConstraints gbc_lblWarningsLabel = new GridBagConstraints();
+		gbc_lblWarningsLabel.gridheight = 2;
+		gbc_lblWarningsLabel.gridwidth = 7;
+		gbc_lblWarningsLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblWarningsLabel.gridx = 0;
+		gbc_lblWarningsLabel.gridy = 12;
+		panel.add(lblWarningsLabel, gbc_lblWarningsLabel);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.EAST);
@@ -249,6 +282,7 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 					if (resetClick == 0) {
 						timer.stop();
 						count = 10;
+						clip.stop();
 						resetClick++;
 					} else if (resetClick == 1) {
 						timer.restart();
@@ -313,6 +347,9 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 				startClick = 0;
 				resetClick = 0;
 				timer.stop();
+				if (clip.isActive()) {
+					clip.stop();
+				}
 			}
 		});
 		GridBagConstraints gbc_btnMakeThePlayer = new GridBagConstraints();
@@ -341,7 +378,25 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 					lblTimerLabel.setText("Done");
 					timer.stop();
 					count = 10;
-					//audioFilePath().play();
+					try {
+						System.out.print("Here\n");
+						audioFilePath();
+						
+						//clip.start();
+					} catch (UnsupportedAudioFileException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (LineUnavailableException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (URISyntaxException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
 				} else {
 					lblTimerLabel.setText(format(count));
 					count--;
@@ -366,19 +421,39 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 		return String.format("%02dm:%02ds", mins, secs);
 	}
 	
-	//public MediaPlayer audioFilePath() {
+	public void audioFilePath() throws UnsupportedAudioFileException, IOException, LineUnavailableException, URISyntaxException{
 		
 		//com.sun.javafx.application.PlatformImpl.startup(()->{});
 		//String timerEnd = "G:\\Music\\[Rocksfull] ONE OK ROCK - Ambitions (Japanese Ver)\\09. I was King.mp3";
-		//URL audioURL = getClass().getResource("src\\resources\\09. I was King.mp3");
+		///URL audioURL = getClass().getResource("src\\resources\\09. I was King.mp3");
 		//Media hit = new Media(new File(audioURL).toURI().toString());
 		//String sound = "src\\resources\\09. I was King.mp3";
 		//Media hit = new Media(new File(sound).toURI().toString());
 		//MediaPlayer mediaPlayer = new MediaPlayer(hit);
-		//return mediaPlayer;
+		/*
+		in = this.getClass().getResourceAsStream(s);
+		audioStream = new AudioStream(in);
+		audioStream.
+		AudioPlayer.player.start(audioStream);*/
 		
 		
-	//}
+		/*Method 1 of audio output*/
+		//URL doneSound = getClass().getResource("/resource/19 ...Steel for Humans.wav");
+		//System.out.print(doneSound);
+		//File soundFile = new File(getClass().getResourceAsStream(doneSound));
+		//FileInputStream in = new FileInputStream(soundFile);
+		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResource("/resource/19 ...Steel for Humans.wav"));
+		clip = AudioSystem.getClip();
+		clip.open(audioInputStream);
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		clip.start();
+	}
+	
+	public void editWarningsLabel(String s) {
+		lblWarningsLabel.setText(s);
+		lblWarningsLabel.setEnabled(true);
+		
+	}
 	
 	@Override
 	public void mouseDragged(MouseEvent arg0) {

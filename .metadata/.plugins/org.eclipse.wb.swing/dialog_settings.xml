@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<section name="org.eclipse.wb.internal.swing.model.property.editor.font.FontDialog">
+		<item value="1423" key="x"/>
+		<item value="504" key="width"/>
+		<item value="807" key="y"/>
+		<item value="506" key="height"/>
+	</section>
 	<section name="org.eclipse.wb.internal.swing.model.layout.gbl.ui.RowEditDialog">
 		<item value="1587" key="x"/>
 		<item value="340" key="width"/>
@@ -7,9 +13,9 @@
 		<item value="430" key="height"/>
 	</section>
 	<section name="org.eclipse.wb.internal.swing.model.layout.gbl.ui.ColumnEditDialog">
-		<item value="790" key="x"/>
+		<item value="1200" key="x"/>
 		<item value="340" key="width"/>
-		<item value="880" key="y"/>
+		<item value="1148" key="y"/>
 		<item value="367" key="height"/>
 	</section>
 </section>

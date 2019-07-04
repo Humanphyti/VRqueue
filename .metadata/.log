@@ -4071,3 +4071,6 @@ java.lang.IndexOutOfBoundsException: Index: 9, Size: 8
 
 !ENTRY org.eclipse.jdt.debug 2 0 2019-07-02 23:55:53.758
 !MESSAGE Unable to find location of java.lang.Thread.setName() in debuggee JVM, for type java.lang.Thread
+
+!ENTRY org.eclipse.jdt.debug 2 0 2019-07-03 20:46:15.366
+!MESSAGE Unable to find location of java.lang.Thread.setName() in debuggee JVM, for type java.lang.Thread
