@@ -43,7 +43,7 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
 	JLabel lblWarningsLabel;
 	private Timer timer;
-	private int count = 10;
+	private int count = 600;
 	private JTextField textField;
 	public ArrayList<FuturePlayers> futurePlayer = new ArrayList<FuturePlayers>();
 	private DefaultListModel<FuturePlayers> players = new DefaultListModel<FuturePlayers>();
@@ -54,7 +54,6 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 	private int resetClick = 0;
 	private int textFieldClick = 0;
 	private int vari = 1;
-	private String status;
 	AudioInputStream audioInputStream;
 	InputStream in;
 	private Clip clip;
@@ -281,7 +280,7 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 				if (!lblCurrentPlayer_1.getText().contains("Displays the Current Player")) {
 					if (resetClick == 0) {
 						timer.stop();
-						count = 10;
+						count = 600;
 						clip.stop();
 						resetClick++;
 					} else if (resetClick == 1) {
@@ -377,7 +376,7 @@ public class QueueWindow extends JFrame implements ActionListener,  MouseMotionL
 				if (count <= 0) {
 					lblTimerLabel.setText("Done");
 					timer.stop();
-					count = 10;
+					count = 600;
 					try {
 						System.out.print("Here\n");
 						audioFilePath();
